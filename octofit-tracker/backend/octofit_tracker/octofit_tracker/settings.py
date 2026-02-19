@@ -24,9 +24,10 @@ SECRET_KEY = 'django-insecure-x29tw5qtki#kn(z*q^q0bs7z!4+zs_3puqw!9z3!3*_82i2zc&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-if os.environ.get('CODESPACE_NAME'):
-    ALLOWED_HOSTS.append(f"{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
+
+# Allow all hosts for development
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -66,6 +67,26 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+STATIC_URL = 'static/'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CORS headers config for all hosts
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = list(default_headers) if 'default_headers' in globals() else ['*']
+CORS_ALLOW_METHODS = list(default_methods) if 'default_methods' in globals() else ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
 ROOT_URLCONF = 'octofit_tracker.urls'
 

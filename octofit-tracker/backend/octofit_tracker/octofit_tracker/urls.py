@@ -13,12 +13,39 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from users.views import ProfileViewSet
+from teams.views import TeamViewSet
+from activities.views import ActivityViewSet
+from leaderboard.views import LeaderboardViewSet
+from workouts.views import WorkoutViewSet
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+router = DefaultRouter()
+router.register(r'profiles', ProfileViewSet)
+router.register(r'teams', TeamViewSet)
+router.register(r'activities', ActivityViewSet)
+router.register(r'leaderboard', LeaderboardViewSet)
+router.register(r'workouts', WorkoutViewSet)
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'profiles': request.build_absolute_uri('api/profiles/'),
+        'teams': request.build_absolute_uri('api/teams/'),
+        'activities': request.build_absolute_uri('api/activities/'),
+        'leaderboard': request.build_absolute_uri('api/leaderboard/'),
+        'workouts': request.build_absolute_uri('api/workouts/'),
+    })
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('dj_rest_auth.urls')),
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('api/users/', include('users.urls')),
+    path('api/', include(router.urls)),
+    path('', api_root, name='api-root'),
 ]
